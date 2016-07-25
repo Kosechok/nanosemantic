@@ -1,0 +1,8 @@
+.bundle
+Gemfile.lock
+bin/*
+doc/*
+lib/test.rb
+pkg/*
+tmp/*
+.idea

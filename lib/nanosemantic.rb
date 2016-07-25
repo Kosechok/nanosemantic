@@ -1,4 +1,3 @@
-require "nanosemantic/version"
 require 'time'
 require 'net/http'
 require 'net/https'
@@ -16,9 +15,11 @@ module Nanosemantic
   include RequestResult
   include RequestJson
 
-  class ResultError < StandardError; end
+  class NanosemanticError < StandardError; end
+  class ResultError < NanosemanticError; end
+  class RequestError < NanosemanticError; end
 
-  attr_reader :error, :errormsg, :last_request, :last_response, :interfaces
+  attr_reader :uuid, :clientid, :error, :errormsg, :last_request, :last_response, :api
 
   def default_url
   	'http://biz.nanosemantics.ru/api/axe/nkd/json/'
@@ -26,14 +27,14 @@ module Nanosemantic
 
   def initialize(opt = {})
   	prepare_ulr
-  	@uuid = Inf.new(opt[:uuid])
-  	@clientid = Inf.new(opt[:clientid])
+  	@uuid = opt[:uuid]
+  	@clientid = opt[:clientid]
   end
 
   def request(iface, opt ={})
     raise ArgumentError, "should be hash" unless opt.kind_of?(Hash)
     opt[:uuid] = @uuid
-    opt[:client] = @clientid
+    opt[:clientid] = @clientid
     res = http_request(iface, make_body(iface, opt))
     doc = JSON.parse(res)
     parse_retval(iface, doc)
@@ -42,26 +43,30 @@ module Nanosemantic
 
 
   def http_request(iface, req_body)
+
+
     @last_request = @last_response = nil
 
-    url = @interfaces[iface]
+    url = @api[iface]
 
-    http = Net::HTTP.new(url.host, url.port)  	
-  	@last_response = result = http.post( url.path, req_body, , "Accept" => "application/json" )
+    http = Net::HTTP.new(url.host, url.port) 
+    @last_request = req_body 
+  	@last_response = result = http.post( url.path, req_body, "Accept" => "application/json" )
 
     case result
       when Net::HTTPSuccess
+      	puts "SSSSSSSSSS"
         result.body
       else
+      	puts "EERRRRRRRRRRRRR"
         @error = result.code
-        @errormsg = result.body if result.class.body_permitted?()
-        raise RequestError, [@error, @errormsg].join(' ')
+        raise RequestError, @error
     end  	
   end
 
   def make_body(iface, opt)
   	iface_func = "json_#{iface}"
-  	send(iface, opt)
+  	send(iface_func, opt)
   end
 
   def parse_retval(iface, doc)         
