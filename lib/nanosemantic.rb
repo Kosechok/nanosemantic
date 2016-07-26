@@ -47,6 +47,7 @@ module Nanosemantic
     @last_request = @last_response = nil
     url = @api[iface]
 
+
     http = Net::HTTP.new(url.host, url.port)  
 
 
