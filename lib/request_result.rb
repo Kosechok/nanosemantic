@@ -11,4 +11,8 @@ module Nanosemantic::RequestResult
 	def result_ips_list(doc)
 		doc['list']
 	end	
+
+	def result_users_list(doc)
+		doc['list']
+	end	
 end

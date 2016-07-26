@@ -61,5 +61,29 @@ module Nanosemantic::RequestJson
 		end
 		return body		
 	end
+
+	def json_users_list(opt)
+		body = {
+			request: {
+				clientId: @clientid,
+				uuid:     @uuid,
+		    	period: {
+		        	from: opt[:start] || Date.today.to_time.to_i - 86400,
+		        	to: opt[:finish] || Date.today.to_time.to_i
+		    	},
+		    	ts: DateTime.now.to_i				
+			}
+		}
+		if %w(ip status).map(&:to_sym).any? { |key| opt.key?(key)  }  
+			filter = { 
+						filters: {
+			        		ip: opt[:ip] || nil,
+			        		status: opt[:status] || nil
+			        	}
+			    	} 
+			body = body.merge(filter)
+		end
+		return body	
+	end
 		
 end

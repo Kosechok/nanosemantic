@@ -47,10 +47,7 @@ module Nanosemantic
     @last_request = @last_response = nil
     url = @api[iface]
 
-
     http = Net::HTTP.new(url.host, url.port)  
-
-
     @last_request = req_body 
   	@last_response = result = http.post( url.path, req_body, "Accept" => "application/json" )
 
