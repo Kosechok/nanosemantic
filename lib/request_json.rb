@@ -44,16 +44,27 @@ module Nanosemantic::RequestJson
 		if %w(ip userid status).map(&:to_sym).any? { |key| opt.key?(key)  }  
 			filter = { 
 						filters: {
-			        		ip: nil,
-			        		userId: nil,
-			        		status: nil
+			        		ip: 	opt[:ip] || nil,
+			        		userId: opt[:userid] || nil,
+			        		status: opt[:status] || nil
 			        	}
 			    	} 
 			body = body.merge(filter)
 		end
+		return body
 
-		body.to_json 
 		
+	end
+
+	def json_chat_messages(opt)
+		body = {
+			request: {
+				clientId: @clientid,
+				uuid:     @uuid,
+				chatId:   opt[:chat_id],
+				ts: DateTime.now.to_i
+			}
+		}
 	end
 		
 end

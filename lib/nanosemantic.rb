@@ -35,7 +35,7 @@ module Nanosemantic
     raise ArgumentError, "should be hash" unless opt.kind_of?(Hash)
     opt[:uuid] = @uuid
     opt[:clientid] = @clientid
-    res = http_request(iface, make_body(iface, opt))
+    res = http_request(iface, make_body(iface, opt).to_json)
     doc = JSON.parse(res)
     parse_retval(iface, doc)
     make_result(iface, doc)
@@ -44,21 +44,19 @@ module Nanosemantic
 
   def http_request(iface, req_body)
 
-
     @last_request = @last_response = nil
-
     url = @api[iface]
 
-    http = Net::HTTP.new(url.host, url.port) 
+    http = Net::HTTP.new(url.host, url.port)  
+
+
     @last_request = req_body 
   	@last_response = result = http.post( url.path, req_body, "Accept" => "application/json" )
 
     case result
       when Net::HTTPSuccess
-      	puts "SSSSSSSSSS"
         result.body
       else
-      	puts "EERRRRRRRRRRRRR"
         @error = result.code
         raise RequestError, @error
     end  	

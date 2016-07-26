@@ -12,4 +12,12 @@ module Nanosemantic::RequestRetval
 		end
 		raise Nanosemantic::ResultError, [@error, @errormsg].join(' ') unless @error.nil?
 	end
+
+	def retval_chat_messages(doc)
+		if doc.has_key?("error")
+			@error = doc['error']['code']
+			@errormsg = doc['error']['message']
+		end
+		raise Nanosemantic::ResultError, [@error, @errormsg].join(' ') unless @error.nil?
+	end
 end
