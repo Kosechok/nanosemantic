@@ -22,7 +22,8 @@ module Nanosemantic
   attr_reader :uuid, :clientid, :error, :errormsg, :last_request, :last_response, :api
 
   def default_url
-  	'http://biz.nanosemantics.ru/api/axe/nkd/json/'
+  	'https://biz.nanosemantics.ru/api/bat/nkd/json/'
+
   end
 
   def initialize(opt = {})
@@ -35,21 +36,27 @@ module Nanosemantic
     raise ArgumentError, "should be hash" unless opt.kind_of?(Hash)
     opt[:uuid] = @uuid
     opt[:clientid] = @clientid
-    res = http_request(iface, make_body(iface, opt).to_json)
+    res = https_request(iface, make_body(iface, opt).to_json)
     doc = JSON.parse(res)
     parse_retval(iface, doc)
     make_result(iface, doc)
   end  
 
 
-  def http_request(iface, req_body)
+  def https_request(iface, req_body)
 
     @last_request = @last_response = nil
     url = @api[iface]
 
-    http = Net::HTTP.new(url.host, url.port)  
+#    https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port) 
+    http = Net::HTTP.new(url.host, url.port) 
+    
+    https.use_ssl = true
+
     @last_request = req_body 
-  	@last_response = result = http.post( url.path, req_body, "Accept" => "application/json" )
+    puts req_body
+    puts url.path
+  	@last_response = result = https.post( url.path, req_body, "Accept" => "application/json" )
 
     case result
       when Net::HTTPSuccess
