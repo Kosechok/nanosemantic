@@ -3,7 +3,7 @@ require 'net/http'
 require 'net/https'
 require 'json'
 require 'rubygems'
-require 'json_builder'
+#require 'json_builder'
 
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
 %w(interfaces request_json request_retval request_result).each{|lib| require lib}
@@ -45,6 +45,8 @@ module Nanosemantic
 
   def https_request(iface, req_body)
 
+    proxy_addr = '172.16.55.88'
+    proxy_port = 8080
     @last_request = @last_response = nil
     url = @api[iface]
 
