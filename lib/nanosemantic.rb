@@ -45,13 +45,12 @@ module Nanosemantic
 
   def https_request(iface, req_body)
 
-    proxy_addr = '172.16.55.88'
-    proxy_port = 8080
+
     @last_request = @last_response = nil
     url = @api[iface]
 
 #    https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port) 
-    http = Net::HTTP.new(url.host, url.port) 
+    https = Net::HTTP.new(url.host, url.port) 
     
     https.use_ssl = true
 

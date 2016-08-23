@@ -9,7 +9,7 @@ module Nanosemantic::RequestJson
 		        	from: opt[:start] || Date.today.to_time.to_i - 86400,
 		        	to: opt[:finish] || Date.today.to_time.to_i
 		    	},
-		    	ts: DateTime.now.to_i
+		    	ts: DateTime.now.to_time.to_i
 		    }
 		  }
 		if %w(ip userid status).map(&:to_sym).any? { |key| opt.key?(key)  }  
