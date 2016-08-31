@@ -55,8 +55,6 @@ module Nanosemantic
     https.use_ssl = true
 
     @last_request = req_body 
-    puts req_body
-    puts url.path
   	@last_response = result = https.post( url.path, req_body, "Accept" => "application/json" )
 
     case result
