@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'nanosemantic/version'
+#require 'nanosemantic/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "nanosemantic"
-  spec.version       = Nanosemantic::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.version       = "0.0.1"
+  spec.authors       = ["Kosechok"]
+  spec.email         = ["kosechok@gmail.com"]
+  spec.summary       = "Chats statistic"
+  spec.description   = "Api of inf's statistic "
   spec.homepage      = ""
   spec.license       = "MIT"
 
