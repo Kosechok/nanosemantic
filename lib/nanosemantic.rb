@@ -6,14 +6,14 @@ require 'rubygems'
 #require 'json_builder'
 
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
-%w(interfaces request_json request_retval request_result).each{|lib| require lib}
+%w(inf_interfaces inf_request_json inf_request_retval inf_request_result).each{|lib| require lib}
 
 
 module Nanosemantic
   # Your code goes here...
-  include RequestRetval
-  include RequestResult
-  include RequestJson
+  include InfRequestRetval
+  include InfRequestResult
+  include InfRequestJson
 
   class NanosemanticError < StandardError; end
   class ResultError < NanosemanticError; end
